@@ -52,10 +52,10 @@ const Profile = () => {
         />
         <input
           type="text"
-          placeholder="password"
-          id="password"
+          placeholder="address"
+          id="address"
           className="border p-3 rounded-lg"
-          defaultValue={currentUser.data.user.role}
+          defaultValue={currentUser.data.user.address}
         />
         <div className="flex items-center justify-center p-3">
           {currentUser.data.user.role === 'admin' ? 

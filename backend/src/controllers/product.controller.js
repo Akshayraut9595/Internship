@@ -13,7 +13,9 @@ const addProduct = asyncHandler( async(req,res) => {
 
   if(!user.verifyAdmin()) throw new ApiError(401,"You are not Authorized !! ");
 
-  const {productName,Description,price,weight} = req.body;
+  const {productName,Description,price,weight,productImage} = req.body;
+
+  console.log("product images : ",productImage);
 
   console.log("product : ",productName);
 
@@ -25,29 +27,31 @@ const addProduct = asyncHandler( async(req,res) => {
       throw new ApiError(400,"All fields are compulsory ! ");
     }
     
-    const productImgLocalPath = req.files?.productImage[0]?.path;
+    // const productImgLocalPath = req.files?.productImage[0]?.path;
 
-    if(!productImgLocalPath)  throw new ApiError(400,"productImg is required ! ");
+    // if(!productImgLocalPath)  throw new ApiError(400,"productImg is required ! ");
       
-    const productImage = await uploadOnCloudinary(productImgLocalPath);
+    // const productImage = await uploadOnCloudinary(productImgLocalPath);
       
-    if(!productImage) throw new ApiError(400,"Error in uploading Product img on Cloudinary ! ");
+    // if(!productImage) throw new ApiError(400,"Error in uploading Product img on Cloudinary ! ");
 
     const product = await Product.create({
       productName,
       Description,
       price,
       weight,
-      productImage: productImage?.url
+      productImages:productImage
     })
 
     const createdProduct = await Product.findById(product._id);
 
     if(!createdProduct) throw new ApiError(500,"Something went wrong while Creating Product ! ");
 
+    console.log("Product added ");
     return res.status(201).json(
         new ApiResponse(200,createdProduct,"Product Created Successfully")
     )
+
 
 });
 

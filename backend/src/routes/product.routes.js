@@ -7,16 +7,7 @@ import { upload } from "../middlewares/multer.middleware.js";
 const router = Router();
 
 
-router.route("/add").post(verifyJWT,
-
-    upload.fields([
-        {
-            name:"productImage",
-            maxCount:1
-        }
-    ])
-
-,addProduct)
+router.route("/add").post(verifyJWT,addProduct)
 
 router.route("/getproduct/:id").post(getProductById)
 router.route("/getallproducts").post(getallproducts)

@@ -26,5 +26,4 @@ router.route("/removeProductFromCart").post(verifyJWT,removeProductFromCart);
 
 // router.route("/refresh-token").post(refreshAccessToken);
 
-
 export default router

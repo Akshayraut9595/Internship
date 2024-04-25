@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
 import DashBoard from "./pages/DashBoard";
 import Product from "./pages/Product";
+import ProductItems from "./components/ProductItems";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/sign-in" element={<SignIn/>}/>
         <Route path="/sign-up" element={<SignUp/>}/>
         <Route path="/cart" element={<Cart/>}/>
+        <Route path="/productItem/:productId" element={<ProductItems/>}/>
         <Route element={<PrivateRoute/>}>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/dashboard" element={<DashBoard />}/>

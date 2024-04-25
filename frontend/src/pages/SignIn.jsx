@@ -1,13 +1,17 @@
 import { set } from "mongoose";
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signInFailure, signInStart, signInSuccess,  } from "../redux/user/userSlice";
+import {
+  signInFailure,
+  signInStart,
+  signInSuccess,
+} from "../redux/user/userSlice";
 
 function SignIn() {
   const [formData, setFormData] = useState({});
-  const {loading, error} = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const disptach = useDispatch();
   const handleChange = (e) => {
@@ -19,34 +23,46 @@ function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      disptach(signInStart());
-      console.log(formData);
-      const res = await fetch("http://localhost:8000/api/v1/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      },
-    );
+    // try {
+    //   disptach(signInStart());
+    //   console.log(formData);
+    //   const res = await fetch("http://localhost:8000/api/v1/users/login", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(formData),
+    //     credentials: "include",
+    //   },
+    // );
 
+    //   if (!res.ok) { // If response status is not in the range 200-299
+    //     throw new Error('Enter valid Credentials'); // Throw an error
+    //   }
 
-      if (!res.ok) { // If response status is not in the range 200-299
-        throw new Error('Enter valid Credentials'); // Throw an error
-      }
+    //   const data = await res.json();
+    //   if (data.success === false) {
+    //     disptach(signInFailure(data.message));
+    //     return;
+    //   }
+    //   disptach(signInSuccess(data));
+    //   navigate('/');
+    // } catch (error) {
+    //   disptach(signInFailure(error.message));
+    // }
 
-
-      const data = await res.json();
-      if (data.success === false) {
-        disptach(signInFailure(data.message));
-        return;
-      }
-      disptach(signInSuccess(data));
-      navigate('/');
-    } catch (error) {
-      disptach(signInFailure(error.message));
-    }
+    await axios
+      .post("/api/v1/users/login", formData, { withCredentials: true })
+      .then(async (res) => {
+        console.log("res : ", res);
+        const data = res.data;
+        if (data.success === false) {
+          disptach(signInFailure(data.message));
+          return;
+        }
+        disptach(signInSuccess(data));
+        navigate("/");
+      });
   };
   return (
     <div className="p-3 max-w-lg mx-auto">
